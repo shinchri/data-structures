@@ -64,6 +64,7 @@ def _find_frequency(str):
     return map
 
 def huffman_encoding(data):
+
     tree = None
     encoded_data = None
     pQueue = PriorityQueue()
@@ -73,41 +74,61 @@ def huffman_encoding(data):
         node = Node(key, map[key])
         pQueue.insert(node)
 
-    tree = pQueue.delete()
+    # handle case when there are only one item
+    if pQueue.size() == 1:
+        node = pQueue.delete()
+        node.code = 0
+        tree = node
+        encoded_data = _encode_data(data, tree)
 
-    while pQueue.size() > 2:
+    elif pQueue.size() == 2:
+        node1 = pQueue.delete()
+        node2 = pQueue.delete()
+        node = node = Node('', node1.value + node2.value, )
+        node1.code = 0
+        node2.code = 1
+        node.left = node1
+        node.right = node2
+
+        tree = node
+        encoded_data = _encode_data(data, tree)
+
+    else:
+        tree = pQueue.delete()
+
+        while pQueue.size() > 2:
+            temp = tree
+            pop_node = pQueue.delete()
+            total = tree.value + pop_node.value
+            new_root = Node('', total)
+            new_root.code = 0
+            temp.code = 0
+            new_root.left = temp
+            pop_node.code = 1
+            new_root.right = pop_node
+            tree = new_root
+
+        # handle the last two remaining nodes in queue
+        pop_node1 = pQueue.delete()
+        pop_node2 = pQueue.delete()
+        node = Node('', pop_node1.value + pop_node2.value, )
+        node.code = 1
+        
+        pop_node1.code = 0
+        node.left = pop_node1
+        
+        pop_node2.code=1
+        node.right = pop_node2
+        
         temp = tree
-        pop_node = pQueue.delete()
-        total = tree.value + pop_node.value
-        new_root = Node('', total)
-        new_root.code = 0
-        temp.code = 0
+
+        # create final new node
+        new_root = Node('', temp.value + node.value)
         new_root.left = temp
-        pop_node.code = 1
-        new_root.right = pop_node
+        new_root.right = node
         tree = new_root
 
-    # handle the last two remaining nodes in queue
-    pop_node1 = pQueue.delete()
-    pop_node2 = pQueue.delete()
-    node = Node('', pop_node1.value + pop_node2.value, )
-    node.code = 1
-    
-    pop_node1.code = 0
-    node.left = pop_node1
-    
-    pop_node2.code=1
-    node.right = pop_node2
-    
-    temp = tree
-
-    # create final new node
-    new_root = Node('', temp.value + node.value)
-    new_root.left = temp
-    new_root.right = node
-    tree = new_root
-
-    encoded_data = _encode_data(data, tree)
+        encoded_data = _encode_data(data, tree)
 
 
     return encoded_data, tree
@@ -119,8 +140,6 @@ def calculate_codes(node, val=''):
        
         newVal = val
         if node.code != -1:
-            # print(node.code)
-            # print(node.value)
             newVal = val + str(node.code)
         if node.left:
             calculate_codes(node.left, newVal)
@@ -133,8 +152,9 @@ def calculate_codes(node, val=''):
     return codes
 
 def _encode_data(data, tree):
-    
+   
     codes = calculate_codes(tree)
+
     encoded_data = ''
     for char in data:
         encoded_data += codes[char]
@@ -162,7 +182,9 @@ def huffman_decoding(data,tree):
 if __name__ == "__main__":
     codes = {}
 
-    encoded_data, tree = huffman_encoding("AAAAAAABBBCCCCCCCDDEEEEEE")
+    ### TEST CASES ###
+
+    # Case 1
 
     a_great_sentence = "The bird is the word"
 
@@ -178,3 +200,64 @@ if __name__ == "__main__":
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
     print ("The content of the encoded data is: {}\n".format(decoded_data))
+
+    # Expected results:
+
+    # The size of the data is: 69
+    # The content of the data is: The bird is the word
+    # The size of the encoded data is: 36
+    # The content of the encoded data is: 000000000000001000111000000000100101101100100000000111000000010000100011100000010000010110
+    # The size of the decoded data is: 69
+    # The content of the encoded data is: The bird is the word
+
+    # Case 2
+
+    a_great_sentence = "a"
+
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
+    
+    encoded_data, tree = huffman_encoding(a_great_sentence)
+    
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
+
+    # Expected results:
+
+    # The size of the data is: 50
+    # The content of the data is: a
+    # The size of the encoded data is: 24
+    # The content of the encoded data is: 0
+    # The size of the decoded data is: 50
+    # The content of the encoded data is: a
+
+    # Case 3
+
+    a_great_sentence = "a;alskdjf;askdjfaslkdjf;alskdjf"
+
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
+    
+    encoded_data, tree = huffman_encoding(a_great_sentence)
+    
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
+
+    # Expected results:
+
+    # The size of the data is: 80
+    # The content of the data is: a;alskdjf;askdjfaslkdjf;alskdjf
+    # The size of the encoded data is: 40
+    # The content of the encoded data is: 11000000110000010000100010010110000000110000100010010110110000100000100010010110000000110000010000100010010110
+    # The size of the decoded data is: 80
+    # The content of the encoded data is: a;alskdjf;askdjfaslkdjf;alskdjf
