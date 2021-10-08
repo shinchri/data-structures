@@ -138,7 +138,12 @@ for i in element_2:
 print (union(linked_list_1,linked_list_2))
 print (intersection(linked_list_1,linked_list_2))
 
+# Expected outputs
+# 1 -> 1 -> 2 -> 3 -> 3 -> 4 -> 4 -> 4 -> 6 -> 6 -> 6 -> 6 -> 9 -> 11 -> 21 -> 21 -> 32 -> 35 -> 65 -> 
+# 4 -> 6 -> 6 -> 21 -> 
+
 # Test case 2
+# no same elements between element_1 and element_2
 
 linked_list_3 = LinkedList()
 linked_list_4 = LinkedList()
@@ -154,3 +159,27 @@ for i in element_2:
 
 print (union(linked_list_3,linked_list_4))
 print (intersection(linked_list_3,linked_list_4))
+
+# 1 -> 1 -> 2 -> 3 -> 3 -> 4 -> 4 -> 6 -> 6 -> 7 -> 8 -> 9 -> 11 -> 21 -> 23 -> 35 -> 65 -> 
+# Notice that intersection is empty
+
+# Test case 3
+# Testing one list item 
+linked_list_3 = LinkedList()
+linked_list_4 = LinkedList()
+
+element_1 = [1]
+element_2 = [1]
+
+for i in element_1:
+    linked_list_3.append(i)
+
+for i in element_2:
+    linked_list_4.append(i)
+
+print (union(linked_list_3,linked_list_4))
+print (intersection(linked_list_3,linked_list_4))
+
+# Expected output
+# 1 -> 
+# 1 -> 
