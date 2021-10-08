@@ -67,6 +67,11 @@ print(is_user_in_group("sub_child_user", parent))
 print(is_user_in_group("sub_child_user", child))
 print(is_user_in_group("sub_child_user", sub_child))
 
+# Expected results:
+# True
+# True
+# True
+
 # Case 2
 parent = Group("parent")
 child = Group("child")
@@ -78,6 +83,11 @@ parent.add_group(child)
 print(is_user_in_group("sub_child_user", parent))
 print(is_user_in_group("sub_child_user", child))
 print(is_user_in_group("sub_child_user", sub_child))
+
+# Expected results:
+# False
+# False
+# False
 
 # Case 3
 
@@ -94,3 +104,8 @@ parent.add_group(child)
 print(is_user_in_group("child_user", parent))
 print(is_user_in_group("child_user", child))
 print(is_user_in_group("child_user", sub_child))
+
+# Expected results:
+# True
+# True
+# False
