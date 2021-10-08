@@ -36,7 +36,7 @@ def is_user_in_group(user, group):
     """
     result = False
     user_list = group.get_users()
-    # print(user_list)
+    
     if user in user_list:
         result = True
 
