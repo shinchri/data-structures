@@ -37,7 +37,35 @@ def _find_files(suffix, path, list):
 
     return list
 
+
+### TEST CASES ###
+
+# Case 1
 result_list = find_files('.c', "./testdir")
 
 for item in result_list:
     print(item)
+
+# Expected results:
+# ./testdir/subdir3/subsubdir1/b.c
+# ./testdir/t1.c
+# ./testdir/subdir5/a.c
+# ./testdir/subdir1/a.c
+
+# Case 2
+result_list = find_files('.d', "./testdir")
+
+for item in result_list:
+    print(item)
+
+# Expected results:
+# Nothing is printed out since there are no file that ends with '.d'
+
+# Case 3
+result_list = find_files('.d', "./testdirs")
+
+for item in result_list:
+    print(item)
+
+# Expected results:
+# Nothing is printed out because there are no directory './testdirs'
