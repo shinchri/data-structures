@@ -65,6 +65,9 @@ def _find_frequency(str):
 
 def huffman_encoding(data):
 
+    if len(data) == 0:
+        return "", None
+
     tree = None
     encoded_data = None
     pQueue = PriorityQueue()
@@ -284,3 +287,27 @@ if __name__ == "__main__":
     # The content of the encoded data is: 0000
     # The size of the decoded data is: 53
     # The content of the encoded data is: aaaa
+
+    # Case 5
+    a_great_sentence = ""
+
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
+    
+    encoded_data, tree = huffman_encoding(a_great_sentence)
+    
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(encoded_data)))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
+
+    # Expected output
+    # The size of the data is: 49
+    # The content of the data is: 
+    # The size of the encoded data is: 49
+    # The content of the encoded data is: 
+    # The size of the decoded data is: 49
+    # The content of the encoded data is: 
