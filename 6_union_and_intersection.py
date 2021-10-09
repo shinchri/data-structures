@@ -59,6 +59,15 @@ def union(llist_1, llist_2):
     # Your Solution Here
     
     union_list = LinkedList()
+
+    if llist_1.size() == 0:
+        union_list = llist_2
+        return union_list
+    
+    if llist_2.size() == 0:
+        union_list = llist_1
+        return union_list
+
     i = j = 0
     node_1 = llist_1.head
     node_2 = llist_2.head
@@ -183,3 +192,45 @@ print (intersection(linked_list_3,linked_list_4))
 # Expected output
 # 1 -> 
 # 1 -> 
+
+
+# Test Case 4
+# one array empty
+linked_list_3 = LinkedList()
+linked_list_4 = LinkedList()
+
+element_1 = [1]
+element_2 = []
+
+for i in element_1:
+    linked_list_3.append(i)
+
+for i in element_2:
+    linked_list_4.append(i)
+
+print (union(linked_list_3,linked_list_4))
+print (intersection(linked_list_3,linked_list_4))
+
+# Expected output
+# 1 ->
+# empty
+
+# Test Case 5
+# two array empty
+linked_list_3 = LinkedList()
+linked_list_4 = LinkedList()
+
+element_1 = []
+element_2 = []
+
+for i in element_1:
+    linked_list_3.append(i)
+
+for i in element_2:
+    linked_list_4.append(i)
+
+print (union(linked_list_3,linked_list_4))
+print (intersection(linked_list_3,linked_list_4))
+
+# Expected output
+# no output
